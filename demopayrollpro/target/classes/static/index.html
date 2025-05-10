@@ -1,0 +1,2360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Payroll Management System</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #2c3e50;
+        --secondary: #3498db;
+        --success: #2ecc71;
+        --danger: #e74c3c;
+        --light: #ecf0f1;
+        --dark: #34495e;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .header {
+        background: var(--primary);
+        color: white;
+        padding: 1rem 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 1.8rem;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo i {
+        margin-right: 10px;
+        font-size: 1.5rem;
+      }
+
+      .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary {
+        background: var(--secondary);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #2980b9;
+      }
+
+      .btn-success {
+        background: var(--success);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background: #27ae60;
+      }
+
+      .btn-danger {
+        background: var(--danger);
+        color: white;
+      }
+
+      .btn-danger:hover {
+        background: #c0392b;
+      }
+
+      .btn-light {
+        background: var(--light);
+        color: var(--dark);
+      }
+
+      .btn-light:hover {
+        background: #bdc3c7;
+      }
+
+      .landing-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Center vertically */
+        text-align: center;
+      }
+
+      .landing-options {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 300px;
+        margin: 0 auto; /* Center horizontally */
+      }
+
+      .landing-page .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+
+      .landing-options button {
+        padding: 15px 20px;
+        font-size: 1.2rem;
+      }
+
+      .auth-form {
+        max-width: 400px;
+        margin: 0 auto; /* Center horizontally */
+        padding: 30px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex; /* Use flexbox */
+        flex-direction: column; /* Stack children vertically */
+        justify-content: center; /* Center children vertically */
+      }
+
+      /* Add these styles to center the admin and employee pages vertically */
+      #admin-page,
+      #employee-page {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .auth-form h2 {
+        margin-bottom: 20px;
+        color: var(--primary);
+        text-align: center;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--dark);
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+      }
+
+      .dashboard {
+        padding: 30px 0;
+      }
+
+      .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      .dashboard-title {
+        color: var(--primary);
+      }
+
+      .admin-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .action-card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .action-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .action-card i {
+        font-size: 2rem;
+        color: var(--secondary);
+        margin-bottom: 15px;
+      }
+
+      .action-card h3 {
+        margin-bottom: 10px;
+        color: var(--primary);
+      }
+
+      .dashboard-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      .section-title {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--light);
+        color: var(--primary);
+      }
+
+      .employee-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .employee-table th,
+      .employee-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .employee-table th {
+        background-color: var(--light);
+        color: var(--dark);
+        font-weight: 600;
+      }
+
+      .employee-table tr:hover {
+        background-color: rgba(236, 240, 241, 0.5);
+      }
+
+      .employee-table .actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .employee-table .actions button {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+      }
+
+      .form-section {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .form-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .form-row .form-group {
+        flex: 1;
+        margin-bottom: 0;
+      }
+
+      .report-card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .report-card h3 {
+        color: var(--primary);
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .report-details {
+        margin-bottom: 15px;
+      }
+
+      .report-row {
+        display: flex;
+        margin-bottom: 10px;
+      }
+
+      .report-label {
+        width: 150px;
+        font-weight: 600;
+      }
+
+      .report-value {
+        flex: 1;
+      }
+
+      .payroll-history {
+        margin-top: 20px;
+      }
+
+      .payroll-month {
+        font-weight: 600;
+        color: var(--secondary);
+      }
+
+      .loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100px;
+      }
+
+      .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top: 4px solid var(--secondary);
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .user-dashboard {
+        padding: 30px 0;
+      }
+
+      .user-header {
+        background: var(--light);
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+      }
+
+      .user-payslip {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .payslip-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .payslip-company {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary);
+        margin-bottom: 10px;
+      }
+
+      .payslip-title {
+        font-size: 1.2rem;
+        color: var(--dark);
+        margin-bottom: 5px;
+      }
+
+      .payslip-period {
+        font-size: 1rem;
+        color: #777;
+      }
+
+      .payslip-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+      }
+
+      .payslip-section {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+      }
+
+      .payslip-section h3 {
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        color: var(--primary);
+      }
+
+      .payslip-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .payslip-label {
+        font-weight: 600;
+      }
+
+      .payslip-total {
+        margin-top: 20px;
+        padding-top: 10px;
+        border-top: 2px solid #ddd;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+
+      /* Media Queries */
+      @media (max-width: 768px) {
+        .admin-actions {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .form-row {
+          flex-direction: column;
+          gap: 0;
+        }
+
+        .payslip-details {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .admin-actions {
+          grid-template-columns: 1fr;
+        }
+
+        .employee-table {
+          font-size: 0.9rem;
+        }
+
+        .employee-table th,
+        .employee-table td {
+          padding: 8px;
+        }
+
+        .header-content {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .header h1 {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container header-content">
+        <div class="logo">
+          <i class="fas fa-money-check-alt"></i>
+          <h1>PayrollPro</h1>
+        </div>
+        <div id="header-actions" class="hidden">
+          <button id="logout-btn" class="btn btn-light">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Landing Page -->
+    <div class="landing-page" id="landing-page">
+      <div class="container">
+        <div class="landing-options">
+          <h2>Welcome to PayrollPro</h2>
+          <p>Your comprehensive employee payroll management solution</p>
+          <button id="admin-btn" class="btn btn-primary">
+            <i class="fas fa-user-shield"></i> Admin Login
+          </button>
+          <button id="employee-btn" class="btn btn-light">
+            <i class="fas fa-user"></i> Employee Login
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Login Page -->
+    <div class="admin-page hidden" id="admin-page">
+      <div class="container">
+        <div class="auth-form">
+          <h2><i class="fas fa-user-shield"></i> Admin Login</h2>
+          <form id="admin-login-form">
+            <div class="form-group">
+              <label for="admin-email">Email</label>
+              <input
+                type="email"
+                id="admin-email"
+                class="form-control"
+                placeholder="admin@payrollpro.com"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="admin-password">Password</label>
+              <input
+                type="password"
+                id="admin-password"
+                class="form-control"
+                placeholder="Enter password"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            <div style="text-align: center; margin-top: 20px">
+              <button type="button" class="btn btn-light" id="back-to-landing">
+                <i class="fas fa-arrow-left"></i> Back
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employee Login Page -->
+    <div class="admin-page hidden" id="employee-page">
+      <div class="container">
+        <div class="auth-form">
+          <h2><i class="fas fa-user"></i> Employee Login</h2>
+          <form id="employee-login-form">
+            <div class="form-group">
+              <label for="employee-id-login">Employee ID</label>
+              <input
+                type="text"
+                id="employee-id-login"
+                class="form-control"
+                placeholder="Enter your ID"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="employee-password">Password</label>
+              <input
+                type="password"
+                id="employee-password"
+                class="form-control"
+                placeholder="Enter password"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            <div style="text-align: center; margin-top: 20px">
+              <button
+                type="button"
+                class="btn btn-light"
+                id="back-to-landing-emp"
+              >
+                <i class="fas fa-arrow-left"></i> Back
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard hidden" id="admin-dashboard">
+      <div class="container">
+        <div class="dashboard-header">
+          <h2 class="dashboard-title">
+            <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+          </h2>
+          <span id="admin-name">Welcome, Admin</span>
+        </div>
+
+        <!-- Admin Action Cards -->
+        <div class="admin-actions">
+          <div class="action-card" id="add-employee-btn">
+            <i class="fas fa-user-plus"></i>
+            <h3>Add Employee</h3>
+            <p>Create new employee records</p>
+          </div>
+          <div class="action-card" id="view-employee-btn">
+            <i class="fas fa-users"></i>
+            <h3>Manage Employees</h3>
+            <p>View, update or delete employees</p>
+          </div>
+          <div class="action-card" id="payroll-btn">
+            <i class="fas fa-money-bill-wave"></i>
+            <h3>Set Payroll</h3>
+            <p>Define employee salaries</p>
+          </div>
+          <div class="action-card" id="report-btn">
+            <i class="fas fa-chart-bar"></i>
+            <h3>Reports</h3>
+            <p>Generate payroll reports</p>
+          </div>
+        </div>
+
+        <!-- Dynamic Content Area -->
+        <div class="dashboard-content hidden" id="add-employee-form">
+          <h3 class="section-title">Add/Update Employee</h3>
+          <div class="form-section">
+            <form id="employee-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="employee-id">Employee ID</label>
+                  <input
+                    type="text"
+                    id="employee-id"
+                    class="form-control"
+                    placeholder="EMP001"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="employee-name">Full Name</label>
+                  <input
+                    type="text"
+                    id="employee-name"
+                    class="form-control"
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="employee-email">Email</label>
+                  <input
+                    type="email"
+                    id="employee-email"
+                    class="form-control"
+                    placeholder="john@example.com"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="employee-phone">Phone</label>
+                  <input
+                    type="tel"
+                    id="employee-phone"
+                    class="form-control"
+                    placeholder="+1234567890"
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="employee-position">Position</label>
+                  <select id="employee-position" class="form-control" required>
+                    <option value="">Select Position</option>
+                    <option value="HR">HR</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Engineer">Engineer</option>
+                    <option value="Clerk">Clerk</option>
+                    <option value="Analyst">Analyst</option>
+                    <option value="Developer">Developer</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="employee-department">Department</label>
+                  <select
+                    id="employee-department"
+                    class="form-control"
+                    required
+                  >
+                    <option value="">Select Department</option>
+                    <option value="HR">Human Resources</option>
+                    <option value="IT">IT</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Operations">Operations</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="employee-join-date">Join Date</label>
+                  <input
+                    type="date"
+                    id="employee-join-date"
+                    class="form-control"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="employee-salary">Base Salary</label>
+                  <input
+                    type="number"
+                    id="employee-salary"
+                    class="form-control"
+                    placeholder="50000"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="employee-password">Default Password</label>
+                <input
+                  type="text"
+                  id="employee-password-set"
+                  class="form-control"
+                  value="employee123"
+                  readonly
+                />
+                <small style="color: #777"
+                  >Employee can change this after first login</small
+                >
+              </div>
+              <div style="text-align: right; margin-top: 20px">
+                <button
+                  type="button"
+                  class="btn btn-light"
+                  id="cancel-add-employee"
+                >
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-success">
+                  <i class="fas fa-save"></i> Save Employee
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- View Employees Section -->
+        <div class="dashboard-content hidden" id="view-employee-list">
+          <h3 class="section-title">Employee Management</h3>
+          <div style="margin-bottom: 20px">
+            <input
+              type="text"
+              id="employee-search"
+              class="form-control"
+              placeholder="Search employees..."
+              style="width: 300px"
+            />
+          </div>
+          <table class="employee-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Department</th>
+                <th>Salary</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="employee-list">
+              <!-- Employees will be listed here -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Payroll Form Section -->
+        <div class="dashboard-content hidden" id="payroll-form">
+          <h3 class="section-title">Set Payroll</h3>
+          <div class="form-section">
+            <form id="payroll-details-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="payroll-employee-id">Select Employee</label>
+                  <select
+                    id="payroll-employee-id"
+                    class="form-control"
+                    required
+                  >
+                    <option value="">Select Employee</option>
+                    <!-- Populated dynamically -->
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="payroll-month">Month</label>
+                  <input
+                    type="month"
+                    id="payroll-month"
+                    class="form-control"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="payroll-base">Base Salary</label>
+                  <input
+                    type="number"
+                    id="payroll-base"
+                    class="form-control"
+                    readonly
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="payroll-bonus">Bonus</label>
+                  <input
+                    type="number"
+                    id="payroll-bonus"
+                    class="form-control"
+                    value="0"
+                    min="0"
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="payroll-deductions">Deductions</label>
+                  <input
+                    type="number"
+                    id="payroll-deductions"
+                    class="form-control"
+                    value="0"
+                    min="0"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="payroll-amount">Net Amount</label>
+                  <input
+                    type="number"
+                    id="payroll-amount"
+                    class="form-control"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="payroll-notes">Notes</label>
+                <textarea
+                  id="payroll-notes"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Any additional notes..."
+                ></textarea>
+              </div>
+              <div style="text-align: right; margin-top: 20px">
+                <button type="button" class="btn btn-light" id="cancel-payroll">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-success">
+                  <i class="fas fa-save"></i> Save Payroll
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Reports Section -->
+        <div class="dashboard-content hidden" id="reports">
+          <h3 class="section-title">Payroll Reports</h3>
+          <div class="form-section" style="margin-bottom: 30px">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="report-employee-select">Select Employee</label>
+                <select id="report-employee-select" class="form-control">
+                  <option value="all">All Employees</option>
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="report-month">Month</label>
+                <input type="month" id="report-month" class="form-control" />
+              </div>
+            </div>
+            <div style="text-align: right">
+              <button id="generate-report-btn" class="btn btn-primary">
+                <i class="fas fa-chart-bar"></i> Generate Report
+              </button>
+            </div>
+          </div>
+
+          <div id="salary-reports">
+            <!-- Reports will be displayed here -->
+          </div>
+
+          <!-- Payroll Report Display -->
+          <div id="report-display" class="hidden">
+            <div class="report-card">
+              <h3>Payroll Report</h3>
+              <div class="report-details">
+                <div class="report-row">
+                  <div class="report-label">Employee Name:</div>
+                  <div class="report-value" id="report-emp-name"></div>
+                </div>
+                <div class="report-row">
+                  <div class="report-label">Position:</div>
+                  <div class="report-value" id="report-emp-position"></div>
+                </div>
+                <div class="report-row">
+                  <div class="report-label">Department:</div>
+                  <div class="report-value" id="report-emp-department"></div>
+                </div>
+                <div class="report-row">
+                  <div class="report-label">Month:</div>
+                  <div class="report-value" id="report-month-display"></div>
+                </div>
+                <div class="report-row">
+                  <div class="report-label">Base Salary:</div>
+                  <div class="report-value" id="report-base"></div>
+                </div>
+                <div class="report-row">
+                  <div class="report-label">Bonus:</div>
+                  <div class="report-value" id="report-bonus"></div>
+                </div>
+                <div class="report-row">
+                  <div class="report-label">Deductions:</div>
+                  <div class="report-value" id="report-deductions"></div>
+                </div>
+                <div class="report-row">
+                  <div class="report-label">Net Salary:</div>
+                  <div class="report-value">
+                    <input
+                      type="number"
+                      id="report-salary"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div style="text-align: right">
+                <button id="update-payroll-btn" class="btn btn-success">
+                  <i class="fas fa-edit"></i> Update Payroll
+                </button>
+                <button id="print-report-btn" class="btn btn-primary">
+                  <i class="fas fa-print"></i> Print Report
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employee Dashboard -->
+    <div class="user-dashboard hidden" id="employee-dashboard">
+      <div class="container">
+        <div class="user-header">
+          <h2>
+            <i class="fas fa-user-circle"></i>
+            <span id="employee-welcome">Welcome</span>
+          </h2>
+          <p>Employee ID: <span id="employee-id-display"></span></p>
+        </div>
+
+        <div class="user-payslip" id="user-payslip">
+          <div class="payslip-header">
+            <div class="payslip-company">PayrollPro Inc.</div>
+            <div class="payslip-title">Salary Slip</div>
+            <div class="payslip-period" id="payslip-period">May 2025</div>
+          </div>
+
+          <div class="payslip-details">
+            <div class="payslip-section">
+              <h3>Employee Details</h3>
+              <div class="payslip-row">
+                <div class="payslip-label">Employee ID:</div>
+                <div class="payslip-value" id="slip-emp-id"></div>
+              </div>
+              <div class="payslip-row">
+                <div class="payslip-label">Name:</div>
+                <div class="payslip-value" id="slip-emp-name"></div>
+              </div>
+              <div class="payslip-row">
+                <div class="payslip-label">Position:</div>
+                <div class="payslip-value" id="slip-emp-position"></div>
+              </div>
+              <div class="payslip-row">
+                <div class="payslip-label">Department:</div>
+                <div class="payslip-value" id="slip-emp-department"></div>
+              </div>
+            </div>
+
+            <div class="payslip-section">
+              <h3>Payment Details</h3>
+              <div class="payslip-row">
+                <div class="payslip-label">Basic Salary:</div>
+                <div class="payslip-value" id="slip-emp-base"></div>
+              </div>
+              <div class="payslip-row">
+                <div class="payslip-label">Bonus:</div>
+                <div class="payslip-value" id="slip-emp-bonus"></div>
+              </div>
+              <div class="payslip-row">
+                <div class="payslip-label">Deductions:</div>
+                <div class="payslip-value" id="slip-emp-deductions"></div>
+              </div>
+              <div class="payslip-row payslip-total">
+                <div class="payslip-label">Net Salary:</div>
+                <div class="payslip-value" id="slip-emp-net"></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 30px">
+            <button id="print-payslip-btn" class="btn btn-primary">
+              <i class="fas fa-print"></i> Print Payslip
+            </button>
+            <button id="prev-month-btn" class="btn btn-light">
+              <i class="fas fa-arrow-left"></i> Previous Month
+            </button>
+            <button id="next-month-btn" class="btn btn-light">
+              <i class="fas fa-arrow-right"></i> Next Month
+            </button>
+          </div>
+        </div>
+
+        <!-- Employee Profile -->
+        <div class="dashboard-content hidden" id="employee-profile">
+          <h3 class="section-title">My Profile</h3>
+          <div class="form-section">
+            <form id="employee-profile-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Employee ID</label>
+                  <input
+                    type="text"
+                    id="profile-emp-id"
+                    class="form-control"
+                    readonly
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Full Name</label>
+                  <input
+                    type="text"
+                    id="profile-emp-name"
+                    class="form-control"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    id="profile-emp-email"
+                    class="form-control"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Phone</label>
+                  <input
+                    type="tel"
+                    id="profile-emp-phone"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Position</label>
+                  <input
+                    type="text"
+                    id="profile-emp-position"
+                    class="form-control"
+                    readonly
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Department</label>
+                  <input
+                    type="text"
+                    id="profile-emp-department"
+                    class="form-control"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Change Password</label>
+                  <input
+                    type="password"
+                    id="profile-emp-password"
+                    class="form-control"
+                    placeholder="New password"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Confirm Password</label>
+                  <input
+                    type="password"
+                    id="profile-emp-confirm-password"
+                    class="form-control"
+                    placeholder="Confirm new password"
+                  />
+                </div>
+              </div>
+              <div style="text-align: right; margin-top: 20px">
+                <button type="submit" class="btn btn-success">
+                  <i class="fas fa-save"></i> Update Profile
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Global variables
+      // Global variables
+      let employees = [];
+      let payrolls = [];
+      let currentEmployee = null;
+      let currentMonth = new Date().toISOString().slice(0, 7); // Current month in YYYY-MM format
+
+      // API URLs
+      const API_BASE_URL = "http://localhost:8080";
+      const EMPLOYEE_API = `${API_BASE_URL}/api/employees`;
+      const PAYROLL_API = `${API_BASE_URL}/api/payrolls`;
+
+      // DOM Element References
+      const landingPage = document.getElementById("landing-page");
+      const adminPage = document.getElementById("admin-page");
+      const employeePage = document.getElementById("employee-page");
+      const adminDashboard = document.getElementById("admin-dashboard");
+      const employeeDashboard = document.getElementById("employee-dashboard");
+      const headerActions = document.getElementById("header-actions");
+
+      // Landing Page Buttons
+      document.getElementById("admin-btn").addEventListener("click", () => {
+        hideAllPages();
+        adminPage.classList.remove("hidden");
+      });
+
+      document.getElementById("employee-btn").addEventListener("click", () => {
+        hideAllPages();
+        employeePage.classList.remove("hidden");
+      });
+
+      // Back buttons
+      document
+        .getElementById("back-to-landing")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          hideAllPages();
+          landingPage.classList.remove("hidden");
+        });
+
+      document
+        .getElementById("back-to-landing-emp")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          hideAllPages();
+          landingPage.classList.remove("hidden");
+        });
+
+      // Logout buttons
+      document.getElementById("logout-btn").addEventListener("click", logout);
+
+      // Admin Login
+      document
+        .getElementById("admin-login-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const email = document.getElementById("admin-email").value;
+          const password = document.getElementById("admin-password").value;
+
+          // Simple admin authentication
+          if (email === "admin@payrollpro.com" && password === "admin123") {
+            hideAllPages();
+            adminDashboard.classList.remove("hidden");
+            headerActions.classList.remove("hidden");
+            // Load employee data from the backend when admin logs in
+            fetchAllEmployees();
+            fetchAllPayrolls();
+          } else {
+            alert("Invalid admin credentials!");
+          }
+        });
+
+      // Employee Login
+      document
+        .getElementById("employee-login-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const empId = document.getElementById("employee-id-login").value;
+          const password = document.getElementById("employee-password").value;
+
+          // API call to verify employee credentials
+          fetch(`${EMPLOYEE_API}/${empId}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Employee not found");
+              }
+              return response.json();
+            })
+            .then((employee) => {
+              // For simplicity, we're using a fixed password, but in a real app, you would verify the password securely
+              if (
+                password === "employee123" ||
+                password === employee.password
+              ) {
+                currentEmployee = employee;
+                hideAllPages();
+                employeeDashboard.classList.remove("hidden");
+                headerActions.classList.remove("hidden");
+                loadEmployeeData(employee);
+              } else {
+                alert("Invalid password!");
+              }
+            })
+            .catch((error) => {
+              console.error("Login error:", error);
+              alert("Invalid employee credentials!");
+            });
+        });
+
+      // Admin Dashboard Action Buttons
+      document
+        .getElementById("add-employee-btn")
+        .addEventListener("click", () => {
+          hideAllDashboardContent();
+          document
+            .getElementById("add-employee-form")
+            .classList.remove("hidden");
+          document.getElementById("employee-id").readOnly = false;
+          document.getElementById("employee-form").reset();
+        });
+
+      document
+        .getElementById("view-employee-btn")
+        .addEventListener("click", () => {
+          hideAllDashboardContent();
+          document
+            .getElementById("view-employee-list")
+            .classList.remove("hidden");
+          fetchAllEmployees().then(() => renderEmployees());
+        });
+
+      document.getElementById("payroll-btn").addEventListener("click", () => {
+        hideAllDashboardContent();
+        document.getElementById("payroll-form").classList.remove("hidden");
+        fetchAllEmployees().then(() => populateEmployeeDropdown());
+      });
+
+      document.getElementById("report-btn").addEventListener("click", () => {
+        hideAllDashboardContent();
+        document.getElementById("reports").classList.remove("hidden");
+        fetchAllEmployees().then(() => populateReportEmployeeDropdown());
+      });
+
+      // Cancel buttons
+      document
+        .getElementById("cancel-add-employee")
+        .addEventListener("click", () => {
+          hideAllDashboardContent();
+        });
+
+      document
+        .getElementById("cancel-payroll")
+        .addEventListener("click", () => {
+          hideAllDashboardContent();
+        });
+
+      // Employee form submission
+      document
+        .getElementById("employee-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const id = document.getElementById("employee-id").value;
+          const name = document.getElementById("employee-name").value;
+          const email = document.getElementById("employee-email").value;
+          const phone = document.getElementById("employee-phone").value;
+          const position = document.getElementById("employee-position").value;
+          const department = document.getElementById(
+            "employee-department"
+          ).value;
+          const joinDate = document.getElementById("employee-join-date").value;
+          const salary =
+            parseFloat(document.getElementById("employee-salary").value) || 0;
+
+          const employeeData = {
+            id,
+            name,
+            email,
+            phone,
+            position,
+            department,
+            joinDate,
+            salary,
+            password: "employee123",
+          };
+
+          console.log("Sending employee data:", employeeData);
+
+          // Check if we're updating or creating
+          const method = document.getElementById("employee-id").readOnly
+            ? "PUT"
+            : "POST";
+          const url = method === "PUT" ? `${EMPLOYEE_API}/${id}` : EMPLOYEE_API;
+
+          // Send to the backend
+          fetch(url, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(employeeData),
+          })
+            .then((response) => {
+              console.log("Response status:", response.status);
+
+              // Log full response for debugging
+              return response.text().then((text) => {
+                try {
+                  // Try to parse as JSON
+                  const data = JSON.parse(text);
+                  console.log("Response data:", data);
+
+                  if (!response.ok) {
+                    if (data.error) {
+                      throw new Error(data.error);
+                    } else {
+                      throw new Error(
+                        `Error saving employee: ${response.status}`
+                      );
+                    }
+                  }
+
+                  return data;
+                } catch (e) {
+                  console.log("Raw response:", text);
+                  if (!response.ok) {
+                    throw new Error(
+                      `Error saving employee: ${response.status}`
+                    );
+                  }
+                  return text ? JSON.parse(text) : {};
+                }
+              });
+            })
+            .then((savedEmployee) => {
+              console.log("Employee saved successfully:", savedEmployee);
+              alert(
+                method === "PUT"
+                  ? "Employee updated successfully!"
+                  : "Employee added successfully!"
+              );
+              this.reset();
+              hideAllDashboardContent();
+              fetchAllEmployees(); // Refresh the employee list
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("Failed to save employee. " + error.message);
+            });
+        });
+      // Payroll form submission
+      // Payroll form submission - fixed version
+      document
+        .getElementById("payroll-details-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const empId = document.getElementById("payroll-employee-id").value;
+          const month = document.getElementById("payroll-month").value;
+          const base = parseFloat(
+            document.getElementById("payroll-base").value
+          );
+          const bonus =
+            parseFloat(document.getElementById("payroll-bonus").value) || 0;
+          const deductions =
+            parseFloat(document.getElementById("payroll-deductions").value) ||
+            0;
+          const amount = parseFloat(
+            document.getElementById("payroll-amount").value
+          );
+          const notes = document.getElementById("payroll-notes").value;
+
+          const payrollData = {
+            empId,
+            month,
+            base,
+            bonus,
+            deductions,
+            amount,
+            notes,
+          };
+
+          console.log("Submitting payroll data:", payrollData);
+
+          // Find if a payroll record exists for this employee and month
+          fetch(`${PAYROLL_API}/employee/${empId}/month/${month}`)
+            .then((response) => {
+              console.log("Check existing payroll response:", response.status);
+
+              // If found, update the existing record
+              if (response.ok) {
+                return response.json().then((existingPayroll) => {
+                  console.log(
+                    "Updating existing payroll with ID:",
+                    existingPayroll.id
+                  );
+                  return fetch(`${PAYROLL_API}/${existingPayroll.id}`, {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(payrollData),
+                  });
+                });
+              } else if (response.status === 404) {
+                // If not found (404), create a new record
+                console.log("Creating new payroll record");
+                return fetch(PAYROLL_API, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(payrollData),
+                });
+              } else {
+                // Handle other error statuses
+                console.error(
+                  "Error checking existing payroll:",
+                  response.status
+                );
+                return response.text().then((text) => {
+                  throw new Error(
+                    `Error checking payroll: ${response.status} - ${text}`
+                  );
+                });
+              }
+            })
+            .then((response) => {
+              console.log("Save payroll response status:", response.status);
+
+              if (!response.ok) {
+                return response.text().then((text) => {
+                  let errorMsg = "Error saving payroll";
+                  try {
+                    const errorData = JSON.parse(text);
+                    errorMsg = errorData.error || errorMsg;
+                  } catch (e) {
+                    // If not JSON, use text as error
+                    errorMsg += ": " + text;
+                  }
+                  console.error("Error details:", text);
+                  throw new Error(errorMsg);
+                });
+              }
+              return response.json();
+            })
+            .then((savedPayroll) => {
+              console.log("Payroll saved successfully:", savedPayroll);
+              alert("Payroll saved successfully!");
+              this.reset();
+              hideAllDashboardContent();
+              fetchAllPayrolls(); // Refresh the payroll data
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("Failed to save payroll: " + error.message);
+            });
+        });
+
+      // Generate report button
+      document
+        .getElementById("generate-report-btn")
+        .addEventListener("click", generateReport);
+
+      // Update payroll button in report
+      document
+        .getElementById("update-payroll-btn")
+        .addEventListener("click", updatePayrollFromReport);
+
+      // Print buttons
+      document
+        .getElementById("print-report-btn")
+        .addEventListener("click", () => {
+          window.print();
+        });
+
+      document
+        .getElementById("print-payslip-btn")
+        .addEventListener("click", () => {
+          window.print();
+        });
+
+      // Employee payslip navigation
+      document
+        .getElementById("prev-month-btn")
+        .addEventListener("click", () => {
+          navigatePayslip(-1);
+        });
+
+      document
+        .getElementById("next-month-btn")
+        .addEventListener("click", () => {
+          navigatePayslip(1);
+        });
+
+      // Employee dropdown change event
+      document
+        .getElementById("payroll-employee-id")
+        .addEventListener("change", function () {
+          const empId = this.value;
+          if (empId) {
+            const employee = employees.find((emp) => emp.id === empId);
+            if (employee) {
+              document.getElementById("payroll-base").value = employee.salary;
+              calculateNetSalary();
+            }
+          }
+        });
+
+      // Recalculate net salary when bonus or deductions change
+      document
+        .getElementById("payroll-bonus")
+        .addEventListener("input", calculateNetSalary);
+      document
+        .getElementById("payroll-deductions")
+        .addEventListener("input", calculateNetSalary);
+
+      // First, make sure EMPLOYEE_API is defined
+function fetchAllEmployees() {
+  console.log("Fetching employees from:", EMPLOYEE_API);
+  
+  // Check if API URL is properly defined
+  if (!EMPLOYEE_API) {
+    console.error("EMPLOYEE_API variable is not defined");
+    alert("Configuration error: API URL is missing. Please contact support.");
+    return Promise.resolve([]);
+  }
+
+  return fetch(EMPLOYEE_API, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    // Add credentials if your API requires authentication
+    // credentials: 'include', 
+  })
+    .then((response) => {
+      console.log("Employees fetch status:", response.status);
+
+      if (!response.ok) {
+        return response.text().then((text) => {
+          console.error("Error response:", text);
+          throw new Error(
+            `Failed to fetch employees: ${response.status} - ${text || response.statusText}`
+          );
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (!Array.isArray(data)) {
+        console.warn("API returned non-array data:", data);
+        // If data is not in expected format, try to adapt
+        const adaptedData = Array.isArray(data.employees) ? data.employees : 
+                           (data.data ? data.data : []);
+        console.log("Adapted employee data:", adaptedData);
+        employees = adaptedData;
+        return employees;
+      }
+      
+      console.log("Employees fetched successfully:", data);
+      employees = data;
+      return employees;
+    })
+    .catch((error) => {
+      console.error("Error fetching employees:", error);
+      alert(
+        "Failed to load employees. Please try again. " + error.message
+      );
+      return [];
+    });
+}
+function fetchAllPayrolls() {
+  console.log("Fetching all payrolls from:", PAYROLL_API);
+  
+  // Check if API URL is properly defined
+  if (!PAYROLL_API) {
+    console.error("PAYROLL_API variable is not defined");
+    alert("Configuration error: Payroll API URL is missing. Please contact support.");
+    return Promise.resolve([]);
+  }
+
+  return fetch(PAYROLL_API, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    // Add credentials if your API requires authentication
+    // credentials: 'include', 
+  })
+    .then((response) => {
+      console.log("Payroll fetch status:", response.status);
+      
+      if (!response.ok) {
+        return response.text().then((text) => {
+          console.error("Error response:", text);
+          throw new Error(
+            `Failed to fetch payrolls: ${response.status} - ${text || response.statusText}`
+          );
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Payrolls fetched successfully:", data);
+      
+      // Handle different API response formats
+      if (!Array.isArray(data)) {
+        console.warn("API returned non-array payroll data:", data);
+        // If data is not in expected format, try to adapt
+        const adaptedData = Array.isArray(data.payrolls) ? data.payrolls : 
+                           (data.data ? data.data : []);
+        console.log("Adapted payroll data:", adaptedData);
+        payrolls = adaptedData;
+        return payrolls;
+      }
+      
+      payrolls = data;
+      return payrolls;
+    })
+    .catch((error) => {
+      console.error("Error fetching payrolls:", error);
+      alert("Failed to load payroll data. Please try again. " + error.message);
+      return [];
+    });
+}
+
+/**
+ * Fetch payroll data for a specific employee
+ * @param {string} empId - Employee ID
+ * @returns {Promise<Array>} Promise resolving to array of employee's payroll data
+ */
+function fetchEmployeePayrolls(empId) {
+  console.log(`Fetching payrolls for employee ${empId} from: ${PAYROLL_API}/employee/${empId}`);
+  
+  // Check if API URL and employee ID are properly defined
+  if (!PAYROLL_API) {
+    console.error("PAYROLL_API variable is not defined");
+    return Promise.resolve([]);
+  }
+  
+  if (!empId) {
+    console.error("Employee ID is required but not provided");
+    return Promise.resolve([]);
+  }
+
+  return fetch(`${PAYROLL_API}/employee/${empId}`, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    // Add credentials if your API requires authentication
+    // credentials: 'include',
+  })
+    .then((response) => {
+      console.log(`Employee ${empId} payroll fetch status:`, response.status);
+      
+      if (!response.ok) {
+        return response.text().then((text) => {
+          console.error("Error response:", text);
+          throw new Error(
+            `Failed to fetch payrolls for employee ${empId}: ${response.status} - ${text || response.statusText}`
+          );
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(`Payrolls for employee ${empId} fetched successfully:`, data);
+      
+      // Handle different API response formats
+      if (!Array.isArray(data)) {
+        console.warn("API returned non-array payroll data:", data);
+        const adaptedData = Array.isArray(data.payrolls) ? data.payrolls : 
+                           (data.data ? data.data : []);
+        return adaptedData;
+      }
+      
+      return data;
+    })
+    .catch((error) => {
+      console.error(`Error fetching payrolls for employee ${empId}:`, error);
+      // Not showing an alert here as it might be a background operation
+      return [];
+    });
+}
+
+/**
+ * Utility function to combine employee data with their payroll information
+ * This can be helpful if you need to display employee data with payroll details
+ */
+function fetchEmployeesWithPayrolls() {
+  console.log("Fetching all employees with their payroll information");
+  
+  return fetchAllEmployees()
+    .then(employees => {
+      if (!employees || employees.length === 0) {
+        console.warn("No employees found to fetch payrolls for");
+        return [];
+      }
+      
+      // Create a map to store combined data
+      const employeeMap = new Map();
+      employees.forEach(emp => employeeMap.set(emp.id, { ...emp, payrolls: [] }));
+      
+      // Fetch all payrolls
+      return fetchAllPayrolls()
+        .then(allPayrolls => {
+          // Match payrolls to employees
+          allPayrolls.forEach(payroll => {
+            if (employeeMap.has(payroll.employeeId)) {
+              const employee = employeeMap.get(payroll.employeeId);
+              employee.payrolls.push(payroll);
+            }
+          });
+          
+          // Convert map back to array
+          return Array.from(employeeMap.values());
+        });
+    })
+    .catch(error => {
+      console.error("Error fetching employees with payrolls:", error);
+      alert("Failed to load employee and payroll data. Please try again.");
+      return [];
+    });
+}
+      function hideAllPages() {
+        landingPage.classList.add("hidden");
+        adminPage.classList.add("hidden");
+        employeePage.classList.add("hidden");
+        adminDashboard.classList.add("hidden");
+        employeeDashboard.classList.add("hidden");
+        headerActions.classList.add("hidden");
+      }
+
+      function hideAllDashboardContent() {
+        document.getElementById("add-employee-form").classList.add("hidden");
+        document.getElementById("view-employee-list").classList.add("hidden");
+        document.getElementById("payroll-form").classList.add("hidden");
+        document.getElementById("reports").classList.add("hidden");
+        document.getElementById("report-display").classList.add("hidden");
+        document.getElementById("salary-reports").innerHTML = "";
+      }
+
+      function logout() {
+        hideAllPages();
+        landingPage.classList.remove("hidden");
+        currentEmployee = null;
+      }
+
+      function renderEmployees() {
+        const employeeList = document.getElementById("employee-list");
+        employeeList.innerHTML = "";
+
+        if (employees.length === 0) {
+          employeeList.innerHTML =
+            '<tr><td colspan="6" style="text-align: center;">No employees found</td></tr>';
+          return;
+        }
+
+        employees.forEach((emp) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+      <td>${emp.id}</td>
+      <td>${emp.name}</td>
+      <td>${emp.position}</td>
+      <td>${emp.department || "N/A"}</td>
+      <td>₹${emp.salary.toFixed(2)}</td>
+      <td class="actions">
+        <button class="btn btn-primary btn-sm" onclick="editEmployee('${
+          emp.id
+        }')">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="deleteEmployee('${
+          emp.id
+        }')">
+          <i class="fas fa-trash"></i>
+        </button>
+      </td>
+    `;
+          employeeList.appendChild(row);
+        });
+      }
+
+      function populateEmployeeDropdown() {
+        const select = document.getElementById("payroll-employee-id");
+        select.innerHTML = '<option value="">Select Employee</option>';
+
+        employees.forEach((emp) => {
+          const option = document.createElement("option");
+          option.value = emp.id;
+          option.textContent = `${emp.name} (${emp.id})`;
+          select.appendChild(option);
+        });
+      }
+
+      function populateReportEmployeeDropdown() {
+        const select = document.getElementById("report-employee-select");
+        select.innerHTML = '<option value="all">All Employees</option>';
+
+        employees.forEach((emp) => {
+          const option = document.createElement("option");
+          option.value = emp.id;
+          option.textContent = `${emp.name} (${emp.id})`;
+          select.appendChild(option);
+        });
+      }
+
+      function calculateNetSalary() {
+        const base =
+          parseFloat(document.getElementById("payroll-base").value) || 0;
+        const bonus =
+          parseFloat(document.getElementById("payroll-bonus").value) || 0;
+        const deductions =
+          parseFloat(document.getElementById("payroll-deductions").value) || 0;
+
+        const net = base + bonus - deductions;
+        document.getElementById("payroll-amount").value = net.toFixed(2);
+      }
+
+      function generateReport() {
+        const empId = document.getElementById("report-employee-select").value;
+        const month = document.getElementById("report-month").value;
+        const reportsContainer = document.getElementById("salary-reports");
+
+        reportsContainer.innerHTML = "";
+
+        if (empId === "all") {
+          // Generate report for all employees
+          if (!month) {
+            alert("Please select a month for the report.");
+            return;
+          }
+
+          // Fetch payrolls for the selected month
+          fetch(`${PAYROLL_API}/month/${month}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Failed to fetch payrolls for month");
+              }
+              return response.json();
+            })
+            .then((monthPayrolls) => {
+              if (monthPayrolls.length === 0) {
+                reportsContainer.innerHTML =
+                  "<p>No payroll data found for the selected month.</p>";
+                return;
+              }
+
+              let reportHTML = "";
+              monthPayrolls.forEach((payroll) => {
+                const employee = employees.find(
+                  (emp) => emp.id === payroll.empId
+                );
+                if (employee) {
+                  reportHTML += `
+            <div class="report-card">
+              <h3>${employee.name} - ${employee.position}</h3>
+              <div class="report-details">
+                <div class="report-row">
+                  <div class="report-label">Employee ID:</div>
+                  <div class="report-value">${employee.id}</div>
+                </div>
+                <div class="report-row">
+                  <div class="report-label">Department:</div>
+                  <div class="report-value">${
+                    employee.department || "N/A"
+                  }</div>
+                </div>
+                <div class="report-row">
+                  <div class="report-label">Month:</div>
+                  <div class="report-value">${formatMonth(month)}</div>
+                </div>
+                <div class="report-row">
+                  <div class="report-label">Base Salary:</div>
+                  <div class="report-value">₹${payroll.base.toFixed(2)}</div>
+                </div>
+                <div class="report-row">
+                  <div class="report-label">Bonus:</div>
+                  <div class="report-value">₹${payroll.bonus.toFixed(2)}</div>
+                </div>
+                <div class="report-row">
+                  <div class="report-label">Deductions:</div>
+                  <div class="report-value">₹${payroll.deductions.toFixed(
+                    2
+                  )}</div>
+                </div>
+                <div class="report-row">
+                  <div class="report-label">Net Salary:</div>
+                  <div class="report-value">₹${payroll.amount.toFixed(2)}</div>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <button class="btn btn-primary btn-sm" onclick="viewDetailedReport('${
+                  employee.id
+                }', '${month}')">
+                  <i class="fas fa-eye"></i> View Details
+                </button>
+              </div>
+            </div>
+          `;
+                }
+              });
+
+              reportsContainer.innerHTML = reportHTML;
+            })
+            .catch((error) => {
+              console.error("Error generating report:", error);
+              reportsContainer.innerHTML =
+                "<p>Error loading payroll data. Please try again.</p>";
+            });
+        } else {
+          // Generate report for specific employee
+          if (!empId || !month) {
+            alert("Please select both an employee and month for the report.");
+            return;
+          }
+
+          viewDetailedReport(empId, month);
+        }
+      }
+
+      function viewDetailedReport(empId, month) {
+        // Find employee in our loaded data
+        const employee = employees.find((emp) => emp.id === empId);
+        if (!employee) {
+          alert("Employee not found.");
+          return;
+        }
+
+        // Fetch payroll data from API
+        fetch(`${PAYROLL_API}/employee/${empId}/month/${month}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("No payroll data found");
+            }
+            return response.json();
+          })
+          .then((payroll) => {
+            document.getElementById("report-emp-name").textContent =
+              employee.name;
+            document.getElementById("report-emp-position").textContent =
+              employee.position;
+            document.getElementById("report-emp-department").textContent =
+              employee.department || "N/A";
+            document.getElementById("report-month-display").textContent =
+              formatMonth(month);
+            document.getElementById(
+              "report-base"
+            ).textContent = `₹${payroll.base.toFixed(2)}`;
+            document.getElementById(
+              "report-bonus"
+            ).textContent = `₹${payroll.bonus.toFixed(2)}`;
+            document.getElementById(
+              "report-deductions"
+            ).textContent = `₹${payroll.deductions.toFixed(2)}`;
+            document.getElementById("report-salary").value =
+              payroll.amount.toFixed(2);
+
+            // Store reference to the payroll for updating
+            const reportDisplay = document.getElementById("report-display");
+            reportDisplay.dataset.empId = empId;
+            reportDisplay.dataset.month = month;
+            reportDisplay.dataset.payrollId = payroll.id;
+            reportDisplay.classList.remove("hidden");
+          })
+          .catch((error) => {
+            console.error("Error fetching payroll:", error);
+            alert("No payroll data found for the selected employee and month.");
+          });
+      }
+
+      function updatePayrollFromReport() {
+        const reportDisplay = document.getElementById("report-display");
+        const empId = reportDisplay.dataset.empId;
+        const month = reportDisplay.dataset.month;
+        const payrollId = reportDisplay.dataset.payrollId;
+        const newAmount = parseFloat(
+          document.getElementById("report-salary").value
+        );
+
+        if (!payrollId) {
+          alert("Payroll record not found.");
+          return;
+        }
+
+        // First fetch the current payroll
+        fetch(`${PAYROLL_API}/${payrollId}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to fetch payroll");
+            }
+            return response.json();
+          })
+          .then((payroll) => {
+            // Update the amount
+            payroll.amount = newAmount;
+
+            // Save the updated payroll
+            return fetch(`${PAYROLL_API}/${payrollId}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(payroll),
+            });
+          })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to update payroll");
+            }
+            return response.json();
+          })
+          .then(() => {
+            alert("Payroll updated successfully!");
+            fetchAllPayrolls(); // Refresh payroll data
+          })
+          .catch((error) => {
+            console.error("Error updating payroll:", error);
+            alert("Failed to update payroll. Please try again.");
+          });
+      }
+
+      function loadEmployeeData(employee) {
+        // Set welcome message
+        document.getElementById(
+          "employee-welcome"
+        ).textContent = `Welcome, ${employee.name}`;
+        document.getElementById("employee-id-display").textContent =
+          employee.id;
+
+        // Load employee payslip data
+        loadEmployeePayslip(employee.id, currentMonth);
+      }
+
+      function loadEmployeePayslip(empId, month) {
+        const employee = employees.find((emp) => emp.id === empId);
+        if (!employee) {
+          alert("Employee not found!");
+          return;
+        }
+
+        // Update payslip period
+        document.getElementById("payslip-period").textContent =
+          formatMonth(month);
+
+        // Update employee details
+        document.getElementById("slip-emp-id").textContent = employee.id;
+        document.getElementById("slip-emp-name").textContent = employee.name;
+        document.getElementById("slip-emp-position").textContent =
+          employee.position;
+        document.getElementById("slip-emp-department").textContent =
+          employee.department || "N/A";
+
+        // Fetch payroll data from API
+        fetch(`${PAYROLL_API}/employee/${empId}/month/${month}`)
+          .then((response) => {
+            if (!response.ok) {
+              // If no payroll found, show base salary info
+              document.getElementById(
+                "slip-emp-base"
+              ).textContent = `₹${employee.salary.toFixed(2)}`;
+              document.getElementById("slip-emp-bonus").textContent = "₹0.00";
+              document.getElementById("slip-emp-deductions").textContent =
+                "₹0.00";
+              document.getElementById(
+                "slip-emp-net"
+              ).textContent = `₹${employee.salary.toFixed(2)}`;
+              return;
+            }
+            return response.json();
+          })
+          .then((payroll) => {
+            if (payroll) {
+              document.getElementById(
+                "slip-emp-base"
+              ).textContent = `₹${payroll.base.toFixed(2)}`;
+              document.getElementById(
+                "slip-emp-bonus"
+              ).textContent = `₹${payroll.bonus.toFixed(2)}`;
+              document.getElementById(
+                "slip-emp-deductions"
+              ).textContent = `₹${payroll.deductions.toFixed(2)}`;
+              document.getElementById(
+                "slip-emp-net"
+              ).textContent = `₹${payroll.amount.toFixed(2)}`;
+            }
+          })
+          .catch((error) => {
+            console.error("Error loading payslip:", error);
+          });
+      }
+
+      function navigatePayslip(direction) {
+        // Get current month and year
+        const [year, month] = currentMonth.split("-");
+
+        // Create a Date object for the first day of the month
+        const date = new Date(parseInt(year), parseInt(month) - 1, 1);
+
+        // Add or subtract one month
+        date.setMonth(date.getMonth() + direction);
+
+        // Format the new date back to YYYY-MM
+        currentMonth = `${date.getFullYear()}-${String(
+          date.getMonth() + 1
+        ).padStart(2, "0")}`;
+
+        // Reload the payslip
+        loadEmployeePayslip(currentEmployee.id, currentMonth);
+      }
+
+      function formatMonth(monthStr) {
+        if (!monthStr) return "";
+        const [year, month] = monthStr.split("-");
+        const date = new Date(parseInt(year), parseInt(month) - 1, 1);
+        return date.toLocaleDateString("en-US", {
+          month: "long",
+          year: "numeric",
+        });
+      }
+
+      // Global functions for button click events
+      window.editEmployee = function (id) {
+        // Find the employee in our cached data
+        const employee = employees.find((emp) => emp.id === id);
+        if (employee) {
+          document.getElementById("employee-id").value = employee.id;
+          document.getElementById("employee-id").readOnly = true;
+          document.getElementById("employee-name").value = employee.name;
+          document.getElementById("employee-email").value =
+            employee.email || "";
+          document.getElementById("employee-phone").value =
+            employee.phone || "";
+          document.getElementById("employee-position").value =
+            employee.position;
+          document.getElementById("employee-department").value =
+            employee.department || "";
+          document.getElementById("employee-join-date").value =
+            employee.joinDate || "";
+          document.getElementById("employee-salary").value =
+            parseFloat(employee.salary) || 0;
+
+          hideAllDashboardContent();
+          document
+            .getElementById("add-employee-form")
+            .classList.remove("hidden");
+        }
+      };
+
+      window.deleteEmployee = function (id) {
+        if (confirm("Are you sure you want to delete this employee?")) {
+          fetch(`${EMPLOYEE_API}/${id}`, {
+            method: "DELETE",
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Failed to delete employee");
+              }
+              alert("Employee deleted successfully!");
+              fetchAllEmployees().then(() => renderEmployees());
+            })
+            .catch((error) => {
+              console.error("Error deleting employee:", error);
+              alert("Failed to delete employee. Please try again.");
+            });
+        }
+      };
+
+      window.viewDetailedReport = viewDetailedReport;
+
+      // Initialize employee search
+      document
+        .getElementById("employee-search")
+        .addEventListener("input", function () {
+          const searchTerm = this.value.toLowerCase();
+          const rows = document
+            .getElementById("employee-list")
+            .getElementsByTagName("tr");
+
+          Array.from(rows).forEach((row) => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? "" : "none";
+          });
+        });
+      function testApi() {
+        fetch(API_BASE_URL + "/actuator/health")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`API health check failed: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then((data) => {
+            console.log("API health check:", data);
+            alert("API connection successful!");
+          })
+          .catch((error) => {
+            console.error("API connection error:", error);
+            alert(
+              "Failed to connect to API. Check if backend is running correctly."
+            );
+          });
+      }
+
+      // Initialize app on load
+      function init() {
+        // Check if we should seed initial data
+        fetch(EMPLOYEE_API)
+          .then((response) => {
+            if (!response.ok) {
+              return [];
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.length === 0) {
+              // Seed initial data
+              const sampleEmployees = [
+                {
+                  id: "EMP001",
+                  name: "John Doe",
+                  email: "john@example.com",
+                  phone: "1234567890",
+                  position: "Manager",
+                  department: "IT",
+                  joinDate: "2023-01-15",
+                  salary: 75000,
+                  password: "employee123",
+                },
+                {
+                  id: "EMP002",
+                  name: "Jane Smith",
+                  email: "jane@example.com",
+                  phone: "9876543210",
+                  position: "HR",
+                  department: "Human Resources",
+                  joinDate: "2023-02-10",
+                  salary: 65000,
+                  password: "employee123",
+                },
+              ];
+
+              // Create employees one by one
+              sampleEmployees.forEach((emp) => {
+                fetch(EMPLOYEE_API, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(emp),
+                }).catch((error) =>
+                  console.error("Error creating sample employee:", error)
+                );
+              });
+
+              // Create sample payrolls
+              setTimeout(() => {
+                const samplePayrolls = [
+                  {
+                    empId: "EMP001",
+                    month: "2025-05",
+                    base: 75000,
+                    bonus: 5000,
+                    deductions: 2000,
+                    amount: 78000,
+                    notes: "Monthly salary with performance bonus",
+                    date: new Date().toISOString(),
+                  },
+                  {
+                    empId: "EMP002",
+                    month: "2025-05",
+                    base: 65000,
+                    bonus: 2000,
+                    deductions: 1500,
+                    amount: 65500,
+                    notes: "Monthly salary",
+                    date: new Date().toISOString(),
+                  },
+                ];
+
+                samplePayrolls.forEach((payroll) => {
+                  fetch(PAYROLL_API, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(payroll),
+                  }).catch((error) =>
+                    console.error("Error creating sample payroll:", error)
+                  );
+                });
+              }, 1000); // Delay to ensure employees are created first
+            }
+          })
+          .catch((error) => console.error("Error initializing app:", error));
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        const btn = document.getElementById("your-button-id");
+        if (btn) {
+          btn.addEventListener("click", () => {
+            // your logic
+          });
+        }
+      });
+      // Initialize the system when the page loads
+      document.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>
